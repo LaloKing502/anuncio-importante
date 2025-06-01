@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Un Nuevo Capítulo! | La Noticia Más Dulce de Nuestra Vida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos generales y reinicio */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            overflow: hidden;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        *, *:before, *:after {
+          box-sizing: border-box;
+        }
+
+        /* Contenedor principal de la "cápsula del tiempo" */
+        .time-capsule-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Estilo para cada "capítulo" o sección (las primeras 2 pantallas) */
+        .chapter {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            scroll-snap-align: start;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 0 0 15px rgba(0,0,0,0.9);
+            padding: 20px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+            animation-fill-mode: backwards;
+        }
+
+        /* Clase para el capítulo actualmente visible (activada por JS) */
+        .chapter.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Estilos de tipografía generales para capítulos (primeras 2 pantallas) */
+        .chapter h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .chapter p {
+            font-size: 1.3em;
+            max-width: 900px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Capas oscuras semi-transparentes sobre las imágenes de fondo */
+        #chapter1 { background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/boda.jpg'); }
+        #chapter2 { background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/viaje.jpg'); }
+
+        /* Estilo para la sección FINAL del anuncio del bebé */
+        #announcement {
+            background: url('img/baby_sky.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #4a4a4a;
+            text-shadow: none;
+            padding: 25px 20px; /* Padding para escritorio */
+            overflow: hidden; /* Esto fuerza que todo quepa sin scroll interno */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #announcement h2 {
+            color: #e91e63;
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2em;
+            margin-bottom: 15px; /* Más espacio al título para airear */
+            font-weight: 700;
+            line-height: 1.05;
+        }
+        
+        /* Estilos específicos para los párrafos de la sección de anuncio */
+        #announcement p { /* Estilo base para todos los <p> en #announcement */
+            max-width: 650px; /* Ancho máximo, ajustado a tu texto */
+            line-height: 1.35;
+            margin-bottom: 10px; /* Margen por defecto entre párrafos */
+            color: #555;
+            font-size: 1.05em; /* Un poco más pequeño para escritorio, para que quepa */
+        }
+
+        /* Texto Principal: El Latido que Cambió Nuestro Mundo (el párrafo largo que enviadeste) */
+        #announcement .main-announcement-text {
+            font-size: 1em; /* Mismo tamaño que el p base */
+            color: #555;
+            margin-top: 15px; /* Más espacio respecto a la ecografía */
+            margin-bottom: 15px; /* Espacio antes de la voz del bebé */
+        }
+
+        /* La Voz del Bebé */
+        #announcement .baby-personal-voice {
+            font-size: 1.25em; /* Un poco más grande para destacarse */
+            color: #e91e63;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 10px; /* Margen más compacto */
+        }
+
+        /* Frase de cierre */
+        #announcement .closing-phrase {
+            font-size: 1em; /* Mismo tamaño que main-announcement-text */
+            color: #6a6a6a;
+            margin-bottom: 25px; /* Más espacio antes del botón */
+            font-style: italic;
+            text-align: center;
+        }
+
+        .baby-reveal {
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fadeInScale 1.5s forwards 0.5s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 90%;
+            margin: auto;
+            justify-content: center;
+            min-height: 100%;
+        }
+        @keyframes fadeInScale {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Animación de los elementos individuales dentro de baby-reveal */
+        /* La secuencia y los retrasos son cruciales para el ritmo del UX */
+        .baby-reveal > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1s forwards;
+        }
+        .baby-reveal h2 { animation-delay: 1.5s; }
+        .baby-reveal .baby-img { animation-delay: 2s; animation-name: fadeUp, pulseGlow; animation-duration: 1s, 2s; animation-iteration-count: 1, infinite; animation-timing-function: forwards, ease-in-out; animation-direction: normal, alternate; }
+        .baby-reveal .main-announcement-text { animation-delay: 2.5s; }
+        .baby-reveal .baby-personal-voice { animation-delay: 3s; }
+        .baby-reveal .closing-phrase { animation-delay: 3.5s; }
+        .baby-reveal .comments-button { animation-delay: 4s; }
+
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 30px rgba(0,0,0,0.2), 0 0 0px rgba(255,255,255,0); }
+            50% { box-shadow: 0 0 30px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.7); }
+            100% { box-shadow: 0 0 30px rgba(0,0,0,0.2), 0 0 0px rgba(255,255,255,0); }
+        }
+
+        /* Imagen de ecografía */
+        #announcement .baby-img {
+            max-width: 180px;
+            width: 45%;
+            height: auto;
+            border-radius: 50%;
+            border: 8px solid #fff;
+            box-shadow: 0 0 30px rgba(0,0,0,0.2);
+            margin: 15px 0;
+        }
+
+        /* Estilo del botón de comentarios */
+        .comments-button {
+            display: inline-block;
+            padding: 10px 25px;
+            margin-top: 15px; /* Espacio adicional para el botón */
+            background-color: #e91e63;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 15px rgba(233, 30, 99, 0.2);
+        }
+        .comments-button:hover {
+            background-color: #d81b60;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(233, 30, 99, 0.3);
+        }
+        .comments-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(233, 30, 99, 0.2);
+        }
+
+        /* Responsive Design (Ajustes para tablets) */
+        @media (max-width: 768px) {
+            .chapter h2 { font-size: 2.2em; }
+            .chapter p { font-size: 1em; max-width: 90%; }
+            
+            #announcement { padding: 15px 10px; }
+            #announcement h2 { font-size: 2em; margin-bottom: 10px; }
+            #announcement p { font-size: 0.85em; margin-bottom: 8px; }
+            #announcement .main-announcement-text { font-size: 0.85em !important; margin-bottom: 10px !important; }
+            #announcement .baby-personal-voice { font-size: 1em !important; margin-top: 10px !important; margin-bottom: 12px !important; }
+            #announcement .closing-phrase { font-size: 0.8em !important; margin-bottom: 12px !important; }
+
+            #announcement .baby-img { max-width: 130px; margin: 10px 0; }
+            .comments-button { padding: 8px 18px; font-size: 0.9em; margin-top: 12px; }
+        }
+
+        /* Responsive Design (Ajustes para móviles pequeños) */
+        @media (max-width: 480px) {
+            .chapter { padding: 8px; }
+            .chapter h2 { font-size: 1.6em; }
+            .chapter p { font-size: 0.7em; line-height: 1.2; margin-bottom: 6px; }
+            
+            #announcement { padding: 8px; }
+            #announcement h2 { font-size: 1.4em; margin-bottom: 8px; }
+            #announcement p { font-size: 0.6em !important; margin-bottom: 5px !important; }
+            #announcement .main-announcement-text { font-size: 0.6em !important; margin-bottom: 8px !important; }
+            #announcement .baby-personal-voice { font-size: 0.75em !important; margin-top: 8px !important; margin-bottom: 10px !important; }
+            #announcement .closing-phrase { font-size: 0.55em !important; margin-bottom: 10px !important; }
+
+            #announcement .baby-img { max-width: 80px; margin: 6px 0; border-width: 1px; }
+            .comments-button { padding: 4px 8px; font-size: 0.6em; margin-top: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="time-capsule-container">
+        <!-- Capítulo 1: El Comienzo - La siembra consciente de un gran amor -->
+        <div id="chapter1" class="chapter">
+            <h2>Nuestra Historia</h2>
+            <p>
+                Hace más de siete años, dos almas tejieron un mismo sueño. No fue casualidad ni el tiempo un capricho; fue una promesa silenciosa, un pacto entre nosotros de forjar primero la fortaleza de nuestro amor, de volar alto en nuestros propios cielos, antes de invitar a una nueva estrella a nuestra constelación.<br>
+                Nos dedicamos a crecer, a aprender, a entender la profundidad de este vínculo que hoy es nuestro hogar.
+            </p>
+        </div>
+
+        <!-- Capítulo 2: Años de Crecimiento y Propósito - La preparación del corazón -->
+        <div id="chapter2" class="chapter">
+            <h2>Cada año, un paso hacia un futuro soñado</h2>
+            <p>
+                Cada risa compartida, cada desafío superado, cada meta alcanzada, no hacía más que cimentar la tierra fértil de nuestros corazones. No era una espera pasiva, sino una preparación consciente, una oración constante que se tejía en el silencio de nuestras noches y en la esperanza de nuestros días.<br>
+                Nuestras manos, entrelazadas, sentían el pulso de un futuro que, aunque no veíamos, ya respirábamos con cada fibra de nuestro ser.
+            </p>
+        </div>
+
+        <!-- Capítulo Final: ¡La Gran Revelación! - El clímax de la emoción -->
+        <div id="announcement" class="chapter">
+            <div class="baby-reveal">
+                <!-- Título: Impacto Inmediato -->
+                <h2>¡El Latido que Cambió Nuestro Mundo!</h2>
+                
+                <!-- Imagen de la ecografía: el corazón visual del milagro -->
+                <img src="img/ecografia.png" alt="Ecografía de nuestro bebé" class="baby-img">
+                
+                <!-- Texto Principal: Narrativa condensada del momento revelador, EXACTAMENTE COMO LO ENVIASTE -->
+                <p class="main-announcement-text">
+                    Ese instante en la pantalla lo transformó todo. Entre el silencio expectante y el zumbido de la máquina, apareciste. 
+                    "Ahí está", susurró la doctora mientras sus dedos señalaban ese punto luminoso en la oscuridad. Y en ese preciso momento, el universo se detuvo.
+                    Tus manitas invisibles ya agarraban nuestro corazón. Tus piececitos imaginarios ya dejaban huellas en nuestra alma.
+                    Ese latido...
+                </p>
+                
+                <!-- La Voz del Bebé: el golpe final al corazón, EXACTAMENTE COMO LO ENVIASTE -->
+                <p class="baby-personal-voice">
+                    😇: Ese latido es el primer "te amo" que les regalo. ¡Los espero con todo mi pequeño ser!
+                </p>
+
+                <!-- Frase de Cierre (Opción de preparar el botón), EXACTAMENTE COMO LO ENVIASTE -->
+                <p class="closing-phrase">
+                    Nos vemos muy pronto para compartir esta inmensa alegría.
+                </p>
+
+                <!-- Botón para el tablero de comentarios -->
+                <a href="https://padlet.com/laloomcrap/sorpresa-familiar-sbbpl9s0tmtdu0l5" target="_blank" class="comments-button">
+                    Déjanos un Mensaje de Felicitación
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.querySelector('.time-capsule-container');
+        const chapters = document.querySelectorAll('.chapter');
+
+        function updateActiveChapter() {
+            const viewportHeight = window.innerHeight;
+            chapters.forEach((chapter, index) => {
+                const rect = chapter.getBoundingClientRect();
+                if (rect.top >= -viewportHeight * 0.5 && rect.top < viewportHeight * 0.5) {
+                    chapter.classList.add('active');
+                } else {
+                    chapter.classList.remove('active');
+                }
+            });
+        }
+
+        window.addEventListener('load', updateActiveChapter);
+        container.addEventListener('scroll', updateActiveChapter);
+    </script>
+</body>
+</html>
