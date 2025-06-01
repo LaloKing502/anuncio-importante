@@ -72,17 +72,19 @@
         }
 
         /* Capas oscuras semi-transparentes sobre las imágenes de fondo */
-        #chapter1 { background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/boda.jpg'); }
-        #chapter2 { background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/viaje.jpg'); }
+        /* ¡RUTA DE IMÁGENES MODIFICADA AQUÍ! */
+        #chapter1 { background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('boda.jpg'); } /* Cambiado de img/boda.jpg */
+        #chapter2 { background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('viaje.jpg'); } /* Cambiado de img/viaje.jpg */
 
         /* Estilo para la sección FINAL del anuncio del bebé */
         #announcement {
-            background: url('img/baby_sky.png') no-repeat center center fixed;
+            /* ¡RUTA DE IMAGEN MODIFICADA AQUÍ! */
+            background: url('baby_sky.png') no-repeat center center fixed; /* Cambiado de img/baby_sky.png */
             background-size: cover;
             color: #4a4a4a;
             text-shadow: none;
-            padding: 25px 20px; /* Padding para escritorio */
-            overflow: hidden; /* Esto fuerza que todo quepa sin scroll interno */
+            padding: 25px 20px;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -93,42 +95,42 @@
             color: #e91e63;
             font-family: 'Playfair Display', serif;
             font-size: 3.2em;
-            margin-bottom: 15px; /* Más espacio al título para airear */
+            margin-bottom: 15px;
             font-weight: 700;
             line-height: 1.05;
         }
         
         /* Estilos específicos para los párrafos de la sección de anuncio */
-        #announcement p { /* Estilo base para todos los <p> en #announcement */
-            max-width: 650px; /* Ancho máximo, ajustado a tu texto */
+        #announcement p {
+            max-width: 650px;
             line-height: 1.35;
-            margin-bottom: 10px; /* Margen por defecto entre párrafos */
+            margin-bottom: 10px;
             color: #555;
-            font-size: 1.05em; /* Un poco más pequeño para escritorio, para que quepa */
+            font-size: 1.05em;
         }
 
         /* Texto Principal: El Latido que Cambió Nuestro Mundo (el párrafo largo que enviadeste) */
         #announcement .main-announcement-text {
-            font-size: 1em; /* Mismo tamaño que el p base */
+            font-size: 1em;
             color: #555;
-            margin-top: 15px; /* Más espacio respecto a la ecografía */
-            margin-bottom: 15px; /* Espacio antes de la voz del bebé */
+            margin-top: 15px;
+            margin-bottom: 15px;
         }
 
         /* La Voz del Bebé */
         #announcement .baby-personal-voice {
-            font-size: 1.25em; /* Un poco más grande para destacarse */
+            font-size: 1.25em;
             color: #e91e63;
             font-weight: bold;
             line-height: 1.2;
-            margin-bottom: 10px; /* Margen más compacto */
+            margin-bottom: 10px;
         }
 
         /* Frase de cierre */
         #announcement .closing-phrase {
-            font-size: 1em; /* Mismo tamaño que main-announcement-text */
+            font-size: 1em;
             color: #6a6a6a;
-            margin-bottom: 25px; /* Más espacio antes del botón */
+            margin-bottom: 25px;
             font-style: italic;
             text-align: center;
         }
@@ -150,7 +152,6 @@
         }
 
         /* Animación de los elementos individuales dentro de baby-reveal */
-        /* La secuencia y los retrasos son cruciales para el ritmo del UX */
         .baby-reveal > * {
             opacity: 0;
             transform: translateY(20px);
@@ -175,6 +176,7 @@
 
         /* Imagen de ecografía */
         #announcement .baby-img {
+            /* ¡RUTA DE IMAGEN MODIFICADA AQUÍ! */
             max-width: 180px;
             width: 45%;
             height: auto;
@@ -188,7 +190,7 @@
         .comments-button {
             display: inline-block;
             padding: 10px 25px;
-            margin-top: 15px; /* Espacio adicional para el botón */
+            margin-top: 15px;
             background-color: #e91e63;
             color: white;
             text-decoration: none;
@@ -269,9 +271,10 @@
                 <h2>¡El Latido que Cambió Nuestro Mundo!</h2>
                 
                 <!-- Imagen de la ecografía: el corazón visual del milagro -->
-                <img src="img/ecografia.png" alt="Ecografía de nuestro bebé" class="baby-img">
+                <!-- ¡RUTA DE IMAGEN MODIFICADA AQUÍ! -->
+                <img src="ecografia.png" alt="Ecografía de nuestro bebé" class="baby-img">
                 
-                <!-- Texto Principal: Narrativa condensada del momento revelador, EXACTAMENTE COMO LO ENVIASTE -->
+                <!-- Texto Principal: Narrativa condensada del momento revelador -->
                 <p class="main-announcement-text">
                     Ese instante en la pantalla lo transformó todo. Entre el silencio expectante y el zumbido de la máquina, apareciste. 
                     "Ahí está", susurró la doctora mientras sus dedos señalaban ese punto luminoso en la oscuridad. Y en ese preciso momento, el universo se detuvo.
@@ -279,12 +282,12 @@
                     Ese latido...
                 </p>
                 
-                <!-- La Voz del Bebé: el golpe final al corazón, EXACTAMENTE COMO LO ENVIASTE -->
+                <!-- La Voz del Bebé: el golpe final al corazón -->
                 <p class="baby-personal-voice">
                     😇: Ese latido es el primer "te amo" que les regalo. ¡Los espero con todo mi pequeño ser!
                 </p>
 
-                <!-- Frase de Cierre (Opción de preparar el botón), EXACTAMENTE COMO LO ENVIASTE -->
+                <!-- Frase de Cierre -->
                 <p class="closing-phrase">
                     Nos vemos muy pronto para compartir esta inmensa alegría.
                 </p>
